@@ -21,6 +21,7 @@ final class SearchViewController: UIViewController {
     private lazy var recentSearchTextTableView = UITableView().then {
         $0.isScrollEnabled = false
         $0.dataSource = self
+        $0.delegate = self
         $0.register(
             RecentSearchTextTableViewCell.self,
             forCellReuseIdentifier: RecentSearchTextTableViewCell.identifier
@@ -81,6 +82,22 @@ extension SearchViewController: UITableViewDataSource {
         cell.setupView(recentSearchText: recentSearchText, hasIcon: false)
         
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let searchBar = navigationItem.searchController?.searchBar else {
+            return
+        }
+        
+        searchBar.text = recentSearchTextList[indexPath.row]
+        searchBar.becomeFirstResponder()
+        searchBarSearchButtonClicked(searchBar)
+        searchBar.resignFirstResponder()
     }
 }
 
