@@ -19,14 +19,16 @@ final class SearchViewController: UIViewController {
     
 }
 
-// MARK: - UISearchResultsUpdating
-extension SearchViewController: UISearchResultsUpdating {
-    // 검색 바의 텍스트가 변경될 때마다 호출
-    func updateSearchResults(for searchController: UISearchController) {
+// MARK: - UISearchBarDelegate
+extension SearchViewController: UISearchBarDelegate {
+    // 검색 텍스트가 바뀔 때마다 호출
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        let currentSearchText = searchController.searchBar.text ?? "" // 검색 텍스트
+    }
+    
+    // 검색 버튼을 눌렀을 때 호출
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        print(currentSearchText)
     }
 }
 
@@ -36,7 +38,7 @@ extension SearchViewController {
     func setupSearchBar() {
         let searchController = UISearchController(searchResultsController: SearchResultTableViewController())
         searchController.searchBar.placeholder = "게임, 앱, 스토리 등"
-        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
     }
     
