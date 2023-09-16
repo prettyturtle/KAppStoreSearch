@@ -19,6 +19,10 @@ final class SearchResultViewController: UIViewController {
             RecentSearchTextTableViewCell.self,
             forCellReuseIdentifier: RecentSearchTextTableViewCell.identifier
         )
+        $0.register(
+            SearchResultTableViewCell.self,
+            forCellReuseIdentifier: SearchResultTableViewCell.identifier
+        )
     }
     
     // MARK: - 프로퍼티
@@ -31,6 +35,9 @@ final class SearchResultViewController: UIViewController {
     
     /// 현재 검색 텍스트
     private var currentSearchText = ""
+    
+    /// 검색 완료 플래그
+    private var isEndSearch = false
 }
 
 // MARK: - Life Cycle
@@ -46,6 +53,8 @@ extension SearchResultViewController {
 extension SearchResultViewController {
     /// 검색 텍스트가 바뀔 때마다 호출
     func didChangeSearchText(with text: String) {
+        isEndSearch = false
+        
         currentSearchText = text
         
         recentSearchTexts = findTextFromRecentSearchTextList(text)
@@ -55,10 +64,11 @@ extension SearchResultViewController {
     
     /// 검색 버튼을 눌렀을 때 호출
     func didClickedSearchButton(with text: String) {
+        isEndSearch = true
+        
         saveAtRecentSearchTextList(text)
         
-        // TODO: - 검색 결과 보여주기
-        검색_결과_보여주기()
+        fetchSearchResult(keyword: text)
     }
     
     /// 최근 검색어 리스트에 있는지 찾기
@@ -86,7 +96,24 @@ extension SearchResultViewController {
         }
     }
     
-    private func 검색_결과_보여주기() {
+    /// 검색 결과 보여주기
+    private func fetchSearchResult(keyword: String) {
+        API.search(keyword: keyword).`get` { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let searchResponse):
+                self.searchResults = searchResponse.results
+                
+                DispatchQueue.main.async {
+                    self.searchResultTableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -96,25 +123,42 @@ extension SearchResultViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return recentSearchTexts.count
+        if isEndSearch {
+            return searchResults.count
+        } else {
+            return recentSearchTexts.count
+        }
     }
     
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: RecentSearchTextTableViewCell.identifier,
-            for: indexPath
-        ) as? RecentSearchTextTableViewCell else {
-            return UITableViewCell()
+        if isEndSearch {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: SearchResultTableViewCell.identifier,
+                for: indexPath
+            ) as? SearchResultTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.setup(searchResults[indexPath.row])
+            
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecentSearchTextTableViewCell.identifier,
+                for: indexPath
+            ) as? RecentSearchTextTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            if !recentSearchTexts.isEmpty {
+                cell.setupView(recentSearchText: recentSearchTexts[indexPath.row], hasIcon: true)
+            }
+            
+            return cell
         }
-        
-        if !recentSearchTexts.isEmpty {
-            cell.setupView(recentSearchText: recentSearchTexts[indexPath.row], hasIcon: true)
-        }
-        
-        return cell
     }
 }
 
