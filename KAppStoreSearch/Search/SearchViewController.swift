@@ -47,6 +47,19 @@ extension SearchViewController {
         setupNavigationBar()
         setupSearchBar()
         setupLayout()
+        
+        fetchRecentSearchTextList()
+    }
+}
+
+// MARK: - 로직
+extension SearchViewController {
+    /// 최근 검색어 리스트 가져오기
+    ///
+    /// 최근 검색어 리스트를 가져오고 테이블 뷰를 Reload 한다
+    func fetchRecentSearchTextList() {
+        recentSearchTextList = UserDefaults.standard.fetch(key: .recentSearchTextList) ?? []
+        recentSearchTextTableView.reloadData()
     }
 }
 
@@ -64,7 +77,8 @@ extension SearchViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.setupView(recentSearchText: "HELLO", hasIcon: false)
+        let recentSearchText = recentSearchTextList[indexPath.row]
+        cell.setupView(recentSearchText: recentSearchText, hasIcon: false)
         
         return cell
     }
@@ -80,6 +94,7 @@ extension SearchViewController: UISearchBarDelegate {
     // 검색 버튼을 눌렀을 때 호출
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchResultViewController.didClickedSearchButton(with: searchBar.text ?? "")
+        fetchRecentSearchTextList()
     }
 }
 
