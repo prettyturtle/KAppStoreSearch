@@ -16,8 +16,10 @@
 		6BFAC5402AB57FD30025361B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6BFAC53F2AB57FD30025361B /* SnapKit */; };
 		6BFAC5432AB57FDC0025361B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 6BFAC5422AB57FDC0025361B /* Then */; };
 		6BFAC5452AB582230025361B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC5442AB582230025361B /* TabBarController.swift */; };
-		6BFAC5482AB597A60025361B /* SearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC5472AB597A60025361B /* SearchResultTableViewController.swift */; };
+		6BFAC5482AB597A60025361B /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC5472AB597A60025361B /* SearchResultViewController.swift */; };
 		6BFAC54A2AB598D90025361B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC5492AB598D90025361B /* API.swift */; };
+		6BFAC54C2AB5C0F70025361B /* RecentSearchTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC54B2AB5C0F70025361B /* RecentSearchTextTableViewCell.swift */; };
+		6BFAC54E2AB5C1150025361B /* CellIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC54D2AB5C1150025361B /* CellIdentifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +32,10 @@
 		6BFAC5362AB569DE0025361B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6BFAC5382AB569DE0025361B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6BFAC5442AB582230025361B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		6BFAC5472AB597A60025361B /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
+		6BFAC5472AB597A60025361B /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		6BFAC5492AB598D90025361B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		6BFAC54B2AB5C0F70025361B /* RecentSearchTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchTextTableViewCell.swift; sourceTree = "<group>"; };
+		6BFAC54D2AB5C1150025361B /* CellIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellIdentifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,7 @@
 				6BFAC52C2AB569DC0025361B /* SceneDelegate.swift */,
 				6BFAC5442AB582230025361B /* TabBarController.swift */,
 				6BFAC5492AB598D90025361B /* API.swift */,
+				6BFAC54D2AB5C1150025361B /* CellIdentifier.swift */,
 				6BFAC5462AB5979A0025361B /* Search */,
 				6BFAC5302AB569DC0025361B /* Main.storyboard */,
 				6BFAC5332AB569DE0025361B /* Assets.xcassets */,
@@ -83,7 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				6BFAC52E2AB569DC0025361B /* SearchViewController.swift */,
-				6BFAC5472AB597A60025361B /* SearchResultTableViewController.swift */,
+				6BFAC5472AB597A60025361B /* SearchResultViewController.swift */,
+				6BFAC54B2AB5C0F70025361B /* RecentSearchTextTableViewCell.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -167,12 +173,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BFAC54C2AB5C0F70025361B /* RecentSearchTextTableViewCell.swift in Sources */,
 				6BFAC54A2AB598D90025361B /* API.swift in Sources */,
+				6BFAC54E2AB5C1150025361B /* CellIdentifier.swift in Sources */,
 				6BFAC52F2AB569DC0025361B /* SearchViewController.swift in Sources */,
 				6BFAC5452AB582230025361B /* TabBarController.swift in Sources */,
 				6BFAC52B2AB569DC0025361B /* AppDelegate.swift in Sources */,
 				6BFAC52D2AB569DC0025361B /* SceneDelegate.swift in Sources */,
-				6BFAC5482AB597A60025361B /* SearchResultTableViewController.swift in Sources */,
+				6BFAC5482AB597A60025361B /* SearchResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
