@@ -10,6 +10,7 @@ import Foundation
 extension UserDefaults {
     enum Key: String {
         case recentSearchTextList = "RECENT_SEARCH_TEXT_LIST"
+        case test = "TEST_USER_DEFAULTS_KEY"
     }
     
     func fetch<T: Codable>(key: Key) -> [T]? {
