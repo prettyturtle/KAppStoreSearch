@@ -48,14 +48,39 @@ extension SearchResultViewController {
     func didChangeSearchText(with text: String) {
         currentSearchText = text
         
-        // TODO: - 최근 검색어 리스트에 있는지 찾기
+        recentSearchTexts = findTextFromRecentSearchTextList(text)
+        
+        searchResultTableView.reloadData()
     }
     
     /// 검색 버튼을 눌렀을 때 호출
     func didClickedSearchButton(with text: String) {
-        // TODO: - 최근 검색어에 저장하기
+        saveAtRecentSearchTextList(text)
         
         // TODO: - 검색 결과 보여주기
+        검색_결과_보여주기()
+    }
+    
+    /// 최근 검색어 리스트에 있는지 찾기
+    private func findTextFromRecentSearchTextList(_ text: String) -> [String] {
+        let recentSearchTextList: [String] = UserDefaults.standard.fetch(key: .recentSearchTextList) ?? []
+        let filteredRecentSearchTextList = recentSearchTextList.filter {
+            $0.lowercased().hasPrefix(text.lowercased())
+        }
+        
+        return filteredRecentSearchTextList
+    }
+    
+    /// 최근 검색어에 저장하기
+    private func saveAtRecentSearchTextList(_ text: String) {
+        do {
+            try UserDefaults.standard.save(text, key: .recentSearchTextList)
+        } catch {
+            print("ERROR : \(error)")
+        }
+    }
+    
+    private func 검색_결과_보여주기() {
     }
 }
 
