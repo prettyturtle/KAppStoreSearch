@@ -13,7 +13,7 @@ extension UserDefaults {
         case test = "TEST_USER_DEFAULTS_KEY"
     }
     
-    func fetch<T: Codable>(key: Key) -> [T]? {
+    func fetch<T: Codable & Equatable>(key: Key) -> [T]? {
         guard let data = data(forKey: key.rawValue) else {
             return nil
         }
@@ -25,8 +25,10 @@ extension UserDefaults {
         return decodedData
     }
     
-    func save<T: Codable>(_ item: T, key: Key) throws {
-        let oldItems: [T] = fetch(key: key) ?? []
+    func save<T: Codable & Equatable>(_ item: T, key: Key) throws {
+        var oldItems: [T] = fetch(key: key) ?? []
+        
+        oldItems = oldItems.filter { $0 != item }
         
         let newItems = [item] + oldItems
         
