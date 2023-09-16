@@ -105,7 +105,7 @@ extension SearchResultViewController: UITableViewDataSource {
         }
         
         if !recentSearchTexts.isEmpty {
-            cell.setupView(recentSearchText: recentSearchTexts[indexPath.row])
+            cell.setupView(recentSearchText: recentSearchTexts[indexPath.row], hasIcon: true)
         }
         
         return cell
