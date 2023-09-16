@@ -73,6 +73,12 @@ extension SearchResultViewController {
     
     /// 최근 검색어에 저장하기
     private func saveAtRecentSearchTextList(_ text: String) {
+        let whiteSpaceRemovedText = text.replacingOccurrences(of: " ", with: "") // 띄어쓰기를 제거한 검색어
+        
+        guard whiteSpaceRemovedText != "" else { // 띄어쓰기만 입력한 경우에 대한 예외처리
+            return
+        }
+        
         do {
             try UserDefaults.standard.save(text, key: .recentSearchTextList)
         } catch {
