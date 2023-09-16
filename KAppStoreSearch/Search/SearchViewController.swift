@@ -18,10 +18,19 @@ final class SearchViewController: UIViewController {
     
 }
 
+extension SearchViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let currentSearchText = searchController.searchBar.text ?? "" // 검색 텍스트
+        
+        print(currentSearchText)
+    }
+}
+
 extension SearchViewController {
     func setupSearchBar() {
-        let searchController = UISearchController()
+        let searchController = UISearchController(searchResultsController: SearchResultTableViewController())
         searchController.searchBar.placeholder = "게임, 앱, 스토리 등"
+        searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
     }
     
