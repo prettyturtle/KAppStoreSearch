@@ -17,7 +17,7 @@ final class AppDetailViewController: UIViewController {
     private lazy var totalContentView = UIView()
     
     private lazy var appIconImageView = UIImageView().then {
-        $0.layer.cornerRadius = 12
+        $0.layer.cornerRadius = 30
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.backgroundColor = .placeholderText
@@ -188,8 +188,9 @@ extension AppDetailViewController {
         }
         
         appIconImageView.snp.makeConstraints {
-            $0.leading.top.equalToSuperview().inset(16)
-            $0.size.equalTo(100)
+            $0.leading.equalToSuperview().inset(16)
+            $0.top.equalToSuperview()
+            $0.size.equalTo(120)
         }
         
         appNameLabel.snp.makeConstraints {

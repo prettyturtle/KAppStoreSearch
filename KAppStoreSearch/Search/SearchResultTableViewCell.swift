@@ -41,7 +41,7 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         $0.setTitle("받기", for: .normal)
         $0.setTitleColor(.systemBlue, for: .normal)
         $0.backgroundColor = .secondarySystemBackground
-        $0.layer.cornerRadius = 18
+        $0.layer.cornerRadius = 14
     }
     private lazy var screenshotsStackView = UIStackView().then {
         $0.distribution = .fillEqually
@@ -172,7 +172,7 @@ extension SearchResultTableViewCell {
             $0.leading.equalTo(appNameLabel.snp.trailing).offset(8)
             $0.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(80)
-            $0.height.equalTo(36)
+            $0.height.equalTo(28)
             $0.centerY.equalTo(appIconImageView.snp.centerY)
         }
         
