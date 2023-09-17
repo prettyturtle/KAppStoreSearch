@@ -15,6 +15,13 @@ enum API {
     }
     
     static func search(keyword: String) -> NetworkRequest<SearchResponse> {
-        return NetworkRequest(path: .search, queryItems: ["term": keyword, "country": "KR", "entity": "software"])
+        let queryItems = [
+            "term": keyword,
+            "country": "KR",
+            "entity": "software",
+            "limit": "25"
+        ]
+        
+        return NetworkRequest(path: .search, queryItems: queryItems)
     }
 }
