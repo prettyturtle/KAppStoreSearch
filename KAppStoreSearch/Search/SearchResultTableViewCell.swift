@@ -46,25 +46,62 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
     func setupView(_ searchResult: SearchResult) {
         setupLayout()
         
-        appIconImageView.image = UIImage(data: try! Data(contentsOf: URL(string: searchResult.artworkUrl512)!))
+        ImageFetcher.fetch(searchResult.artworkUrl512) { [weak self] data in
+            guard let data = data else {
+                self?.appIconImageView.backgroundColor = .lightGray
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self?.appIconImageView.image = UIImage(data: data)
+            }
+        }
+        
         appNameLabel.text = searchResult.trackName
         appSubTitleLabel.text = searchResult.artistName == "" ? "X" : searchResult.artistName
         ratingCountLabel.text = "1.1만"
         
         for i in 0..<searchResult.screenshotUrls.count {
-            if i == 3 {
-                break
+            let screenshotURL = searchResult.screenshotUrls[i]
+            let screenshotSize = screenshotURL.split(separator: "/").last?.split(separator: "b").first?.split(separator: "x").map { Double($0) } ?? []
+            
+            var screenshotWidth = 392.0
+            var screenshotHeight = 696.0
+            
+            if screenshotSize.count == 2 {
+                screenshotWidth = screenshotSize[0] ?? screenshotWidth
+                screenshotHeight = screenshotSize[1] ?? screenshotHeight
             }
             
-            let imageView = UIImageView().then {
-                $0.image = UIImage(data: try! Data(contentsOf: URL(string: searchResult.screenshotUrls[i])!))
-                $0.contentMode = .scaleAspectFit
-                $0.layer.cornerRadius = 8
-                $0.clipsToBounds = true
+            if screenshotWidth < screenshotHeight {
+                if i == 3 {
+                    break
+                }
+            } else {
+                if i == 1 {
+                    break
+                }
             }
+            
+            let imageView = UIImageView()
+            
+            ImageFetcher.fetch(searchResult.screenshotUrls[i]) { data in
+                guard let data = data else {
+                    imageView.backgroundColor = .lightGray
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    imageView.image = UIImage(data: data)
+                }
+            }
+                
+            imageView.contentMode = .scaleAspectFit
+            imageView.layer.cornerRadius = 8
+            imageView.clipsToBounds = true
             
             imageView.snp.makeConstraints {
-                $0.height.equalTo(imageView.snp.width).multipliedBy(1.77)
+                $0.height.equalTo(imageView.snp.width).multipliedBy(screenshotHeight / screenshotWidth)
             }
             screenshotsStackView.addArrangedSubview(imageView)
         }
