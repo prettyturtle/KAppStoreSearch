@@ -9,12 +9,18 @@ import UIKit
 import SnapKit
 import Then
 
+// MARK: - 검색 결과 VC 델리게이트
+protocol SearchResultViewControllerDelegate: AnyObject {
+    func didTapSearchResult(of searchResult: SearchResult)
+}
+
 // MARK: - 검색 결과 VC
 final class SearchResultViewController: UIViewController {
     
     // MARK: - UI 컴포넌트
     private lazy var searchResultTableView = UITableView().then {
         $0.dataSource = self
+        $0.delegate = self
         $0.register(
             RecentSearchTextTableViewCell.self,
             forCellReuseIdentifier: RecentSearchTextTableViewCell.identifier
@@ -26,6 +32,8 @@ final class SearchResultViewController: UIViewController {
     }
     
     // MARK: - 프로퍼티
+    
+    weak var delegate: SearchResultViewControllerDelegate?
     
     /// 최근 검색어 중 현재 검색 텍스트가 포함된 결과 배열
     private var recentSearchTexts = [String]()
@@ -160,6 +168,19 @@ extension SearchResultViewController: UITableViewDataSource {
             }
             
             return cell
+        }
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension SearchResultViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let _ = tableView.cellForRow(at: indexPath) as? RecentSearchTextTableViewCell {
+            // TODO: - 최근 검색어 눌러서 검색하기
+        } else if let _ = tableView.cellForRow(at: indexPath) as? SearchResultTableViewCell {
+            delegate?.didTapSearchResult(of: searchResults[indexPath.row])
         }
     }
 }

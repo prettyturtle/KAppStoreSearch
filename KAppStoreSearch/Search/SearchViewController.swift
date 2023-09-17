@@ -31,7 +31,9 @@ final class SearchViewController: UIViewController {
     // MARK: - 프로퍼티
     
     /// 검색 결과 VC
-    private let searchResultViewController = SearchResultViewController()
+    private lazy var searchResultViewController = SearchResultViewController().then {
+        $0.delegate = self
+    }
     
     /// 최근 검색어 최대 노출 개수
     private let recentSearchTextListCountLimit = 4
@@ -61,6 +63,15 @@ extension SearchViewController {
     func fetchRecentSearchTextList() {
         recentSearchTextList = UserDefaults.standard.fetch(key: .recentSearchTextList) ?? []
         recentSearchTextTableView.reloadData()
+    }
+}
+
+// MARK: - SearchResultViewControllerDelegate
+extension SearchViewController: SearchResultViewControllerDelegate {
+    func didTapSearchResult(of searchResult: SearchResult) {
+        let appDetailViewController = AppDetailViewController(searchResult: searchResult)
+        
+        navigationController?.pushViewController(appDetailViewController, animated: true)
     }
 }
 
