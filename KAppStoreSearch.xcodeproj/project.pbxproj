@@ -17,6 +17,7 @@
 		6B1837942AB71A540034CC07 /* AppDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837932AB71A540034CC07 /* AppDetailViewController.swift */; };
 		6B1837962AB73DB70034CC07 /* AppSubInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837952AB73DB70034CC07 /* AppSubInfoView.swift */; };
 		6B1837982AB73F000034CC07 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837972AB73F000034CC07 /* UILabel+.swift */; };
+		6B18379A2AB75B7E0034CC07 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837992AB75B7E0034CC07 /* CacheManager.swift */; };
 		6B37AAC02AB630F000C9EB8D /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B37AABF2AB630F000C9EB8D /* SearchResultTableViewCell.swift */; };
 		6BFAC52B2AB569DC0025361B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC52A2AB569DC0025361B /* AppDelegate.swift */; };
 		6BFAC52D2AB569DC0025361B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC52C2AB569DC0025361B /* SceneDelegate.swift */; };
@@ -55,6 +56,7 @@
 		6B1837932AB71A540034CC07 /* AppDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailViewController.swift; sourceTree = "<group>"; };
 		6B1837952AB73DB70034CC07 /* AppSubInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSubInfoView.swift; sourceTree = "<group>"; };
 		6B1837972AB73F000034CC07 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
+		6B1837992AB75B7E0034CC07 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		6B37AABF2AB630F000C9EB8D /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		6BFAC5272AB569DC0025361B /* KAppStoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KAppStoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFAC52A2AB569DC0025361B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				6BFAC5492AB598D90025361B /* API.swift */,
 				6B18378B2AB6B9C00034CC07 /* NetworkRequest.swift */,
 				6B1837892AB6B9A50034CC07 /* ImageFetcher.swift */,
+				6B1837992AB75B7E0034CC07 /* CacheManager.swift */,
 				6B1837842AB6B2AA0034CC07 /* Model */,
 				6BFAC54D2AB5C1150025361B /* CellIdentifier.swift */,
 				6BFAC54F2AB5D5370025361B /* Extension */,
@@ -298,6 +301,7 @@
 				6B1837862AB6B2B30034CC07 /* SearchResponse.swift in Sources */,
 				6B18378A2AB6B9A50034CC07 /* ImageFetcher.swift in Sources */,
 				6B1837882AB6B2CE0034CC07 /* URLComponents+.swift in Sources */,
+				6B18379A2AB75B7E0034CC07 /* CacheManager.swift in Sources */,
 				6B1837942AB71A540034CC07 /* AppDetailViewController.swift in Sources */,
 				6B37AAC02AB630F000C9EB8D /* SearchResultTableViewCell.swift in Sources */,
 				6BFAC52B2AB569DC0025361B /* AppDelegate.swift in Sources */,

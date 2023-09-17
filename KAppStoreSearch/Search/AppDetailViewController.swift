@@ -277,13 +277,13 @@ extension AppDetailViewController {
     }
     
     private func setupAppIconImageView(iconURL: String) {
-        ImageFetcher.fetch(iconURL) { [weak self] data in
-            guard let data = data else {
+        ImageFetcher.fetch(iconURL) { [weak self] image in
+            guard let image = image else {
                 return
             }
             
             DispatchQueue.main.async {
-                self?.appIconImageView.image = UIImage(data: data)
+                self?.appIconImageView.image = image
             }
         }
     }
@@ -321,13 +321,13 @@ extension AppDetailViewController {
             }
             screenshotsStackView.addArrangedSubview(screenshotImageView)
             
-            ImageFetcher.fetch(screenshotURL) { data in
-                guard let data = data else {
+            ImageFetcher.fetch(screenshotURL) { image in
+                guard let image = image else {
                     return
                 }
                 
                 DispatchQueue.main.async {
-                    screenshotImageView.image = UIImage(data: data)
+                    screenshotImageView.image = image
                 }
             }
         }
