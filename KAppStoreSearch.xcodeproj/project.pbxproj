@@ -11,6 +11,9 @@
 		6B1837882AB6B2CE0034CC07 /* URLComponents+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837872AB6B2CE0034CC07 /* URLComponents+.swift */; };
 		6B18378A2AB6B9A50034CC07 /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837892AB6B9A50034CC07 /* ImageFetcher.swift */; };
 		6B18378C2AB6B9C00034CC07 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B18378B2AB6B9C00034CC07 /* NetworkRequest.swift */; };
+		6B18378F2AB6D6890034CC07 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 6B18378E2AB6D6890034CC07 /* Cosmos */; };
+		6B1837912AB6DCFE0034CC07 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837902AB6DCFE0034CC07 /* Double+.swift */; };
+		6B1837922AB6DE440034CC07 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1837902AB6DCFE0034CC07 /* Double+.swift */; };
 		6B37AAC02AB630F000C9EB8D /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B37AABF2AB630F000C9EB8D /* SearchResultTableViewCell.swift */; };
 		6BFAC52B2AB569DC0025361B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC52A2AB569DC0025361B /* AppDelegate.swift */; };
 		6BFAC52D2AB569DC0025361B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFAC52C2AB569DC0025361B /* SceneDelegate.swift */; };
@@ -45,6 +48,7 @@
 		6B1837872AB6B2CE0034CC07 /* URLComponents+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLComponents+.swift"; sourceTree = "<group>"; };
 		6B1837892AB6B9A50034CC07 /* ImageFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetcher.swift; sourceTree = "<group>"; };
 		6B18378B2AB6B9C00034CC07 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
+		6B1837902AB6DCFE0034CC07 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		6B37AABF2AB630F000C9EB8D /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		6BFAC5272AB569DC0025361B /* KAppStoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KAppStoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFAC52A2AB569DC0025361B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B18378F2AB6D6890034CC07 /* Cosmos in Frameworks */,
 				6BFAC5402AB57FD30025361B /* SnapKit in Frameworks */,
 				6BFAC5432AB57FDC0025361B /* Then in Frameworks */,
 			);
@@ -147,6 +152,7 @@
 			children = (
 				6BFAC5502AB5D5550025361B /* UserDefaults+.swift */,
 				6B1837872AB6B2CE0034CC07 /* URLComponents+.swift */,
+				6B1837902AB6DCFE0034CC07 /* Double+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -178,6 +184,7 @@
 			packageProductDependencies = (
 				6BFAC53F2AB57FD30025361B /* SnapKit */,
 				6BFAC5422AB57FDC0025361B /* Then */,
+				6B18378E2AB6D6890034CC07 /* Cosmos */,
 			);
 			productName = KAppStoreSearch;
 			productReference = 6BFAC5272AB569DC0025361B /* KAppStoreSearch.app */;
@@ -232,6 +239,7 @@
 			packageReferences = (
 				6BFAC53E2AB57FD30025361B /* XCRemoteSwiftPackageReference "SnapKit" */,
 				6BFAC5412AB57FDC0025361B /* XCRemoteSwiftPackageReference "Then" */,
+				6B18378D2AB6D6890034CC07 /* XCRemoteSwiftPackageReference "Cosmos" */,
 			);
 			productRefGroup = 6BFAC5282AB569DC0025361B /* Products */;
 			projectDirPath = "";
@@ -272,6 +280,7 @@
 				6BFAC54C2AB5C0F70025361B /* RecentSearchTextTableViewCell.swift in Sources */,
 				6BFAC5512AB5D5550025361B /* UserDefaults+.swift in Sources */,
 				6BFAC54A2AB598D90025361B /* API.swift in Sources */,
+				6B1837912AB6DCFE0034CC07 /* Double+.swift in Sources */,
 				6BFAC54E2AB5C1150025361B /* CellIdentifier.swift in Sources */,
 				6BFAC52F2AB569DC0025361B /* SearchViewController.swift in Sources */,
 				6BFAC5452AB582230025361B /* TabBarController.swift in Sources */,
@@ -290,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BFAC55F2AB5D7610025361B /* UserDefaults+.swift in Sources */,
+				6B1837922AB6DE440034CC07 /* Double+.swift in Sources */,
 				6BFAC5592AB5D6AA0025361B /* KAppStoreSearchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,6 +579,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6B18378D2AB6D6890034CC07 /* XCRemoteSwiftPackageReference "Cosmos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/Cosmos.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.0.0;
+			};
+		};
 		6BFAC53E2AB57FD30025361B /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -588,6 +606,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6B18378E2AB6D6890034CC07 /* Cosmos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6B18378D2AB6D6890034CC07 /* XCRemoteSwiftPackageReference "Cosmos" */;
+			productName = Cosmos;
+		};
 		6BFAC53F2AB57FD30025361B /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6BFAC53E2AB57FD30025361B /* XCRemoteSwiftPackageReference "SnapKit" */;

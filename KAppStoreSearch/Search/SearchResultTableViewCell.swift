@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import Cosmos
 
 final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
     private lazy var appIconImageView = UIImageView().then {
@@ -26,13 +27,16 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         $0.font = .systemFont(ofSize: 14, weight: .regular)
         $0.textColor = .secondaryLabel
     }
-    private lazy var starRatingCountView = UIView().then { // TODO: 별점 커스텀 뷰
-        $0.backgroundColor = .secondaryLabel
+    private lazy var starRatingCountView = CosmosView().then {
+        $0.settings.starSize = 16
+        $0.settings.starMargin = 2
+        $0.settings.emptyColor = .clear
+        $0.settings.emptyBorderColor = .darkGray
+        $0.settings.filledColor = .darkGray
+        $0.settings.filledBorderColor = .darkGray
+        $0.settings.fillMode = .precise
     }
-    private lazy var ratingCountLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14, weight: .regular)
-        $0.textColor = .lightGray
-    }
+    
     private lazy var installButton = UIButton().then {
         $0.setTitle("받기", for: .normal)
         $0.setTitleColor(.systemBlue, for: .normal)
@@ -53,8 +57,10 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls)
         
         appNameLabel.text = searchResult.trackName
-        appSubTitleLabel.text = searchResult.artistName == "" ? "X" : searchResult.artistName
-        ratingCountLabel.text = "1.1만"
+        appSubTitleLabel.text = !searchResult.genres.isEmpty ? searchResult.genres[0] : (searchResult.artistName != "" ? searchResult.artistName : "")
+        
+        starRatingCountView.rating = searchResult.averageUserRating
+        starRatingCountView.text = Double(searchResult.userRatingCount).convertToUnitString
     }
     
     override func prepareForReuse() {
@@ -136,7 +142,6 @@ extension SearchResultTableViewCell {
             appNameLabel,
             appSubTitleLabel,
             starRatingCountView,
-            ratingCountLabel,
             installButton,
             screenshotsStackView
         ].forEach {
@@ -155,12 +160,11 @@ extension SearchResultTableViewCell {
         
         appSubTitleLabel.snp.makeConstraints {
             $0.leading.trailing.equalTo(appNameLabel)
-            $0.top.equalTo(appNameLabel.snp.bottom).offset(8)
+            $0.top.equalTo(appNameLabel.snp.bottom).offset(4)
         }
         
         starRatingCountView.snp.makeConstraints {
-            $0.leading.trailing.equalTo(appNameLabel)
-            $0.top.equalTo(appSubTitleLabel.snp.bottom).offset(8)
+            $0.leading.equalTo(appNameLabel)
             $0.bottom.equalTo(appIconImageView.snp.bottom)
         }
         
