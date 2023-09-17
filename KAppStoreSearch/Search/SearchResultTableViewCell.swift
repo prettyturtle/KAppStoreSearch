@@ -14,6 +14,9 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         $0.layer.cornerRadius = 12
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
+        $0.backgroundColor = .placeholderText
+        $0.layer.borderColor = UIColor.separator.cgColor
+        $0.layer.borderWidth = 0.4
     }
     private lazy var appNameLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .medium)
@@ -46,9 +49,28 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
     func setupView(_ searchResult: SearchResult) {
         setupLayout()
         
-        ImageFetcher.fetch(searchResult.artworkUrl512) { [weak self] data in
+        setupAppIconImageView(iconURL: searchResult.artworkUrl512)
+        setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls)
+        
+        appNameLabel.text = searchResult.trackName
+        appSubTitleLabel.text = searchResult.artistName == "" ? "X" : searchResult.artistName
+        ratingCountLabel.text = "1.1만"
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        appIconImageView.image = nil
+        
+        screenshotsStackView.subviews.forEach { $0.removeFromSuperview() }
+    }
+}
+
+// MARK: - SET UP
+extension SearchResultTableViewCell {
+    private func setupAppIconImageView(iconURL: String) {
+        ImageFetcher.fetch(iconURL) { [weak self] data in
             guard let data = data else {
-                self?.appIconImageView.backgroundColor = .lightGray
                 return
             }
             
@@ -56,14 +78,17 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
                 self?.appIconImageView.image = UIImage(data: data)
             }
         }
-        
-        appNameLabel.text = searchResult.trackName
-        appSubTitleLabel.text = searchResult.artistName == "" ? "X" : searchResult.artistName
-        ratingCountLabel.text = "1.1만"
-        
-        for i in 0..<searchResult.screenshotUrls.count {
-            let screenshotURL = searchResult.screenshotUrls[i]
-            let screenshotSize = screenshotURL.split(separator: "/").last?.split(separator: "b").first?.split(separator: "x").map { Double($0) } ?? []
+    }
+    private func setupScreenshotStackView(screenshotURLs: [String]) {
+        for i in 0..<screenshotURLs.count {
+            let screenshotURL = screenshotURLs[i]
+            let screenshotSize = screenshotURL
+                .split(separator: "/")
+                .last?
+                .split(separator: "b")
+                .first?
+                .split(separator: "x")
+                .map { Double($0) } ?? []
             
             var screenshotWidth = 392.0
             var screenshotHeight = 696.0
@@ -73,46 +98,36 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
                 screenshotHeight = screenshotSize[1] ?? screenshotHeight
             }
             
-            if screenshotWidth < screenshotHeight {
-                if i == 3 {
-                    break
-                }
-            } else {
-                if i == 1 {
-                    break
-                }
+            let imageCountLimit = screenshotWidth < screenshotHeight ? 3 : 1    // 스크린샷 개수 = 세로형 : 3개, 가로형 : 1개
+            
+            if i == imageCountLimit {
+                return
             }
             
-            let imageView = UIImageView()
+            let screenshotImageView = UIImageView()
             
-            ImageFetcher.fetch(searchResult.screenshotUrls[i]) { data in
+            screenshotImageView.backgroundColor = .placeholderText
+            screenshotImageView.contentMode = .scaleAspectFit
+            screenshotImageView.clipsToBounds = true
+            screenshotImageView.layer.cornerRadius = 8
+            screenshotImageView.layer.borderColor = UIColor.separator.cgColor
+            screenshotImageView.layer.borderWidth = 0.4
+            
+            screenshotImageView.snp.makeConstraints {
+                $0.height.equalTo(screenshotImageView.snp.width).multipliedBy(screenshotHeight / screenshotWidth)
+            }
+            screenshotsStackView.addArrangedSubview(screenshotImageView)
+            
+            ImageFetcher.fetch(screenshotURL) { data in
                 guard let data = data else {
-                    imageView.backgroundColor = .lightGray
                     return
                 }
                 
                 DispatchQueue.main.async {
-                    imageView.image = UIImage(data: data)
+                    screenshotImageView.image = UIImage(data: data)
                 }
             }
-                
-            imageView.contentMode = .scaleAspectFit
-            imageView.layer.cornerRadius = 8
-            imageView.clipsToBounds = true
-            
-            imageView.snp.makeConstraints {
-                $0.height.equalTo(imageView.snp.width).multipliedBy(screenshotHeight / screenshotWidth)
-            }
-            screenshotsStackView.addArrangedSubview(imageView)
         }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        appIconImageView.image = nil
-        
-        screenshotsStackView.subviews.forEach { $0.removeFromSuperview() }
     }
     
     private func setupLayout() {
@@ -146,7 +161,6 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         starRatingCountView.snp.makeConstraints {
             $0.leading.trailing.equalTo(appNameLabel)
             $0.top.equalTo(appSubTitleLabel.snp.bottom).offset(8)
-            $0.height.equalTo(14)
             $0.bottom.equalTo(appIconImageView.snp.bottom)
         }
         
@@ -161,7 +175,7 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         screenshotsStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.equalTo(appIconImageView.snp.bottom).offset(16)
-            $0.bottom.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(32)
         }
     }
 }
