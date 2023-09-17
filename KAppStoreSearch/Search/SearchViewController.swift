@@ -73,6 +73,17 @@ extension SearchViewController: SearchResultViewControllerDelegate {
         
         navigationController?.pushViewController(appDetailViewController, animated: true)
     }
+    
+    func didSelectRecentSearchText(of text: String) {
+        guard let searchBar = navigationItem.searchController?.searchBar else {
+            return
+        }
+        
+        searchBar.text = text
+        searchBar.becomeFirstResponder()
+        searchBarSearchButtonClicked(searchBar)
+        searchBar.resignFirstResponder()
+    }
 }
 
 // MARK: - UITableViewDataSource

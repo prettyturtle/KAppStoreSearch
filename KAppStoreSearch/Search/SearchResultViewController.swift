@@ -12,6 +12,7 @@ import Then
 // MARK: - 검색 결과 VC 델리게이트
 protocol SearchResultViewControllerDelegate: AnyObject {
     func didTapSearchResult(of searchResult: SearchResult)
+    func didSelectRecentSearchText(of text: String)
 }
 
 // MARK: - 검색 결과 VC
@@ -178,7 +179,7 @@ extension SearchResultViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let _ = tableView.cellForRow(at: indexPath) as? RecentSearchTextTableViewCell {
-            // TODO: - 최근 검색어 눌러서 검색하기
+            delegate?.didSelectRecentSearchText(of: recentSearchTexts[indexPath.row])
         } else if let _ = tableView.cellForRow(at: indexPath) as? SearchResultTableViewCell {
             delegate?.didTapSearchResult(of: searchResults[indexPath.row])
         }
