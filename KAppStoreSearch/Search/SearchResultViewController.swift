@@ -124,8 +124,10 @@ extension SearchResultViewController: UITableViewDataSource {
         numberOfRowsInSection section: Int
     ) -> Int {
         if isEndSearch {
+            tableView.separatorStyle = .none
             return searchResults.count
         } else {
+            tableView.separatorStyle = .singleLine
             return recentSearchTexts.count
         }
     }
@@ -142,7 +144,7 @@ extension SearchResultViewController: UITableViewDataSource {
                 return UITableViewCell()
             }
             
-            cell.setup(searchResults[indexPath.row])
+            cell.setupView(searchResults[indexPath.row])
             
             return cell
         } else {
