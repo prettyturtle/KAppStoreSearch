@@ -90,6 +90,7 @@ final class AppDetailViewController: UIViewController {
         $0.layer.shadowRadius = 4
         $0.layer.shadowOffset = CGSize(width: -8, height: 0)
         $0.backgroundColor = .systemBackground
+        $0.addTarget(self, action: #selector(didTapWhatsNewContentShowMoreButton), for: .touchUpInside)
     }
     
     private lazy var screenshotsLabel = UILabel().then {
@@ -137,6 +138,15 @@ extension AppDetailViewController {
     }
 }
 
+// MARK: - UI Event
+extension AppDetailViewController {
+    @objc func didTapWhatsNewContentShowMoreButton(_ sender: UIButton) {
+        sender.isHidden = true
+        whatsNewContentLabel.numberOfLines = 0
+    }
+}
+
+// MARK: - SET UP
 extension AppDetailViewController {
     func setupView() {
         
@@ -146,10 +156,7 @@ extension AppDetailViewController {
         setupSubInfoStackView()
         setupShowMoreButton()
     }
-}
-
-// MARK: - SET UP
-extension AppDetailViewController {
+    
     private func setLabelAttr() {
         appNameLabel.text = searchResult.trackName
         appSubTitleLabel.text = !searchResult.genres.isEmpty ? searchResult.genres[0] : (searchResult.artistName != "" ? searchResult.artistName : "")
