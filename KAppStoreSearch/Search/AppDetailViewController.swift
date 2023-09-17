@@ -28,8 +28,9 @@ final class AppDetailViewController: UIViewController {
     }
     
     private lazy var appNameLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 24, weight: .semibold)
+        $0.font = .systemFont(ofSize: 22, weight: .semibold)
         $0.textColor = .label
+        $0.numberOfLines = 2
     }
     
     private lazy var appSubTitleLabel = UILabel().then {
@@ -69,7 +70,7 @@ final class AppDetailViewController: UIViewController {
     
     private lazy var whatsNewLabel = UILabel().then {
         $0.text = "새로운 기능"
-        $0.font = .systemFont(ofSize: 24, weight: .semibold)
+        $0.font = .systemFont(ofSize: 22, weight: .semibold)
         $0.textColor = .label
     }
     
@@ -95,7 +96,7 @@ final class AppDetailViewController: UIViewController {
     
     private lazy var screenshotsLabel = UILabel().then {
         $0.text = "미리보기"
-        $0.font = .systemFont(ofSize: 24, weight: .semibold)
+        $0.font = .systemFont(ofSize: 22, weight: .semibold)
         $0.textColor = .label
     }
     
@@ -110,6 +111,26 @@ final class AppDetailViewController: UIViewController {
         $0.alignment = .center
         $0.spacing = 8
         $0.axis = .horizontal
+    }
+    
+    private lazy var appDescriptionLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.textColor = .label
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
+    }
+    
+    private lazy var appDescriptionShowMoreButton = UIButton().then {
+        $0.setTitle("더 보기", for: .normal)
+        $0.setTitleColor(.systemBlue, for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0.1, left: 8, bottom: 0.1, right: 0)
+        $0.layer.shadowColor = UIColor.systemBackground.cgColor
+        $0.layer.shadowOpacity = 0.8
+        $0.layer.shadowRadius = 4
+        $0.layer.shadowOffset = CGSize(width: -8, height: 0)
+        $0.backgroundColor = .systemBackground
+        $0.addTarget(self, action: #selector(didTapWhatsNewContentShowMoreButton), for: .touchUpInside)
     }
     
     // MARK: - 프로퍼티
@@ -142,14 +163,18 @@ extension AppDetailViewController {
 extension AppDetailViewController {
     @objc func didTapWhatsNewContentShowMoreButton(_ sender: UIButton) {
         sender.isHidden = true
-        whatsNewContentLabel.numberOfLines = 0
+        
+        if sender == whatsNewContentShowMoreButton {
+            whatsNewContentLabel.numberOfLines = 0
+        } else if sender == appDescriptionShowMoreButton {
+            appDescriptionLabel.numberOfLines = 0
+        }
     }
 }
 
 // MARK: - SET UP
 extension AppDetailViewController {
     func setupView() {
-        
         setupAppIconImageView(iconURL: searchResult.artworkUrl512)
         setLabelAttr()
         setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls)
@@ -163,6 +188,9 @@ extension AppDetailViewController {
         
         whatsNewContentLabel.text = searchResult.releaseNotes
         whatsNewContentLabel.setLineHeight(with: 8)
+        
+        appDescriptionLabel.text = searchResult.description
+        appDescriptionLabel.setLineHeight(with: 8)
     }
     
     private func setupShowMoreButton() {
@@ -172,6 +200,15 @@ extension AppDetailViewController {
             
             whatsNewContentShowMoreButton.snp.makeConstraints {
                 $0.trailing.bottom.equalTo(whatsNewContentLabel)
+            }
+        }
+        
+        if appDescriptionLabel.currentLineCount() > 3 {
+            appDescriptionLabel.numberOfLines = 3
+            totalContentView.addSubview(appDescriptionShowMoreButton)
+            
+            appDescriptionShowMoreButton.snp.makeConstraints {
+                $0.trailing.bottom.equalTo(appDescriptionLabel)
             }
         }
     }
@@ -320,7 +357,8 @@ extension AppDetailViewController {
             whatsNewLabel,
             whatsNewContentLabel,
             screenshotsLabel,
-            screenshotsScrollView
+            screenshotsScrollView,
+            appDescriptionLabel
         ].forEach {
             totalContentView.addSubview($0)
         }
@@ -371,7 +409,7 @@ extension AppDetailViewController {
         
         whatsNewLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(subInfoScrollView.snp.bottom).offset(16)
+            $0.top.equalTo(subInfoScrollView.snp.bottom).offset(32)
         }
         
         whatsNewContentLabel.snp.makeConstraints {
@@ -386,8 +424,7 @@ extension AppDetailViewController {
         
         screenshotsScrollView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(screenshotsLabel.snp.bottom).offset(8)
-            $0.bottom.equalToSuperview().inset(32)
+            $0.top.equalTo(screenshotsLabel.snp.bottom).offset(16)
         }
         
         screenshotsScrollView.addSubview(screenshotsContentView)
@@ -402,6 +439,12 @@ extension AppDetailViewController {
         screenshotsStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.bottom.equalToSuperview()
+        }
+        
+        appDescriptionLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(screenshotsScrollView.snp.bottom).offset(32)
+            $0.bottom.equalToSuperview().inset(32)
         }
     }
 }
