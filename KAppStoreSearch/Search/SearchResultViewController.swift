@@ -32,6 +32,21 @@ final class SearchResultViewController: UIViewController {
         )
     }
     
+    private lazy var searchResultEmptyLabel = UILabel().then {
+        $0.text = "결과 없음"
+        $0.font = .systemFont(ofSize: 32, weight: .black)
+        $0.textColor = .label
+        $0.isHidden = true
+    }
+    
+    private lazy var emptySearchResultTextLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.textColor = .secondaryLabel
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+        $0.isHidden = true
+    }
+    
     // MARK: - 프로퍼티
     
     weak var delegate: SearchResultViewControllerDelegate?
@@ -54,6 +69,8 @@ extension SearchResultViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .systemBackground
+        
         setupLayout()
     }
 }
@@ -69,6 +86,8 @@ extension SearchResultViewController {
         recentSearchTexts = findTextFromRecentSearchTextList(text)
         
         searchResultTableView.reloadData()
+        
+        setupEmptyResultLabel(isEmpty: false)
     }
     
     /// 검색 버튼을 눌렀을 때 호출
@@ -110,15 +129,19 @@ extension SearchResultViewController {
                 return
             }
             
-            switch result {
-            case .success(let searchResponse):
-                self.searchResults = searchResponse.results
-                
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let searchResponse):
+                    if searchResponse.resultCount == 0 {
+                        self.setupEmptyResultLabel(isEmpty: true, searchText: keyword)
+                        return
+                    }
+                    
+                    self.searchResults = searchResponse.results
                     self.searchResultTableView.reloadData()
+                case .failure(_):
+                    self.setupEmptyResultLabel(isEmpty: true, searchText: keyword)
                 }
-            case .failure(let error):
-                print(error)
             }
         }
     }
@@ -186,11 +209,37 @@ extension SearchResultViewController: UITableViewDelegate {
 
 // MARK: - SET UP
 extension SearchResultViewController {
+    private func setupEmptyResultLabel(isEmpty: Bool, searchText: String? = nil) {
+        searchResultTableView.isHidden = isEmpty
+        
+        searchResultEmptyLabel.isHidden = !isEmpty
+        emptySearchResultTextLabel.isHidden = !isEmpty
+        
+        if let searchText = searchText {
+            emptySearchResultTextLabel.text = "'\(searchText)'"
+        }
+    }
+    
     private func setupLayout() {
-        view.addSubview(searchResultTableView)
+        [
+            searchResultTableView,
+            searchResultEmptyLabel,
+            emptySearchResultTextLabel
+        ].forEach {
+            view.addSubview($0)
+        }
         
         searchResultTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        searchResultEmptyLabel.snp.makeConstraints {
+            $0.center.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        emptySearchResultTextLabel.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.top.equalTo(searchResultEmptyLabel.snp.bottom).offset(8)
         }
     }
 }
