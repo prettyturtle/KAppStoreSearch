@@ -218,70 +218,6 @@ extension AppDetailViewController {
         }
     }
     
-    /// 앱 아이콘 하단 서브 정보 뷰 세팅
-    private func setupSubInfoStackView() {
-        setupAppRatingInfo()
-        setupAppAgeInfo()
-    }
-    
-    private func setupAppRatingInfo() {
-        let appRatingInfoView = AppSubInfoView()
-        
-        let appRatingInfoTopLabel = UILabel()
-        appRatingInfoTopLabel.textAlignment = .center
-        appRatingInfoTopLabel.text = Double(searchResult.userRatingCount).convertToUnitString + "개의 평가"
-        appRatingInfoTopLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        appRatingInfoTopLabel.textColor = .secondaryLabel
-        
-        let appRatingInfoMidLabel = UILabel()
-        let userRating = searchResult.averageUserRating
-        
-        let numberFomatter = NumberFormatter()
-        
-        numberFomatter.roundingMode = .floor
-        numberFomatter.maximumSignificantDigits = 2
-        
-        let userRatingString = numberFomatter.string(for: userRating) ?? ""
-        appRatingInfoMidLabel.text = userRatingString
-        appRatingInfoMidLabel.textAlignment = .center
-        appRatingInfoMidLabel.font = .systemFont(ofSize: 24, weight: .semibold)
-        appRatingInfoMidLabel.textColor = .secondaryLabel
-        
-        let appRatingInfoBottomLabel = starRatingCountView
-        
-        appRatingInfoBottomLabel.rating = userRating
-        
-        appRatingInfoView.setupView(top: appRatingInfoTopLabel, mid: appRatingInfoMidLabel, bottom: appRatingInfoBottomLabel)
-        
-        subInfoStackView.addArrangedSubview(appRatingInfoView)
-    }
-    
-    private func setupAppAgeInfo() {
-        let appAgeInfoView = AppSubInfoView()
-        
-        let appAgeInfoTopLabel = UILabel()
-        appAgeInfoTopLabel.textAlignment = .center
-        appAgeInfoTopLabel.text = "연령"
-        appAgeInfoTopLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        appAgeInfoTopLabel.textColor = .secondaryLabel
-        
-        let appAgeInfoMidLabel = UILabel()
-        appAgeInfoMidLabel.text = searchResult.contentAdvisoryRating
-        appAgeInfoMidLabel.textAlignment = .center
-        appAgeInfoMidLabel.font = .systemFont(ofSize: 24, weight: .semibold)
-        appAgeInfoMidLabel.textColor = .secondaryLabel
-        
-        let appAgeInfoBottomLabel = UILabel()
-        appAgeInfoBottomLabel.textAlignment = .center
-        appAgeInfoBottomLabel.text = "세"
-        appAgeInfoBottomLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        appAgeInfoBottomLabel.textColor = .secondaryLabel
-        
-        appAgeInfoView.setupView(top: appAgeInfoTopLabel, mid: appAgeInfoMidLabel, bottom: appAgeInfoBottomLabel)
-        
-        subInfoStackView.addArrangedSubview(appAgeInfoView)
-    }
-    
     /// 앱 아이콘 세팅
     private func setupAppIconImageView(iconURL: String) {
         ImageFetcher.fetch(iconURL) { [weak self] image in
@@ -344,6 +280,70 @@ extension AppDetailViewController {
                 }
             }
         }
+    }
+    
+    /// 앱 아이콘 하단 서브 정보 뷰 세팅
+    private func setupSubInfoStackView() {
+        setupAppRatingInfo()
+        setupAppAgeInfo()
+    }
+    
+    private func setupAppRatingInfo() {
+        let appRatingInfoView = AppSubInfoView()
+        
+        let appRatingInfoTopLabel = UILabel()
+        appRatingInfoTopLabel.textAlignment = .center
+        appRatingInfoTopLabel.text = Double(searchResult.userRatingCount).convertToUnitString + "개의 평가"
+        appRatingInfoTopLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        appRatingInfoTopLabel.textColor = .secondaryLabel
+        
+        let appRatingInfoMidLabel = UILabel()
+        let userRating = searchResult.averageUserRating
+        
+        let numberFomatter = NumberFormatter()
+        
+        numberFomatter.roundingMode = .floor
+        numberFomatter.maximumSignificantDigits = 2
+        
+        let userRatingString = numberFomatter.string(for: userRating) ?? ""
+        appRatingInfoMidLabel.text = userRatingString
+        appRatingInfoMidLabel.textAlignment = .center
+        appRatingInfoMidLabel.font = .systemFont(ofSize: 24, weight: .semibold)
+        appRatingInfoMidLabel.textColor = .secondaryLabel
+        
+        let appRatingInfoBottomLabel = starRatingCountView
+        
+        appRatingInfoBottomLabel.rating = userRating
+        
+        appRatingInfoView.setupView(top: appRatingInfoTopLabel, mid: appRatingInfoMidLabel, bottom: appRatingInfoBottomLabel)
+        
+        subInfoStackView.addArrangedSubview(appRatingInfoView)
+    }
+    
+    private func setupAppAgeInfo() {
+        let appAgeInfoView = AppSubInfoView()
+        
+        let appAgeInfoTopLabel = UILabel()
+        appAgeInfoTopLabel.textAlignment = .center
+        appAgeInfoTopLabel.text = "연령"
+        appAgeInfoTopLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        appAgeInfoTopLabel.textColor = .secondaryLabel
+        
+        let appAgeInfoMidLabel = UILabel()
+        appAgeInfoMidLabel.text = searchResult.contentAdvisoryRating
+        appAgeInfoMidLabel.textAlignment = .center
+        appAgeInfoMidLabel.font = .systemFont(ofSize: 24, weight: .semibold)
+        appAgeInfoMidLabel.textColor = .secondaryLabel
+        
+        let appAgeInfoBottomLabel = UILabel()
+        appAgeInfoBottomLabel.textAlignment = .center
+        appAgeInfoBottomLabel.text = "세"
+        appAgeInfoBottomLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        appAgeInfoBottomLabel.textColor = .secondaryLabel
+        
+        appAgeInfoView.setupView(top: appAgeInfoTopLabel, mid: appAgeInfoMidLabel, bottom: appAgeInfoBottomLabel)
+        
+        subInfoStackView.addArrangedSubview(appAgeInfoView)
     }
     
     /// 레이아웃 세팅

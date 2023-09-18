@@ -74,6 +74,7 @@ final class KAppStoreSearchTests: XCTestCase {
         
         XCTAssertEqual(result, expect)
     }
+    
     func test_단위_변환_10만_미만_1만_이상() {
         let nums = [99_999, 10_000, 12_345]
         let expect = ["9.9만", "1만", "1.2만"]
@@ -81,6 +82,7 @@ final class KAppStoreSearchTests: XCTestCase {
         
         XCTAssertEqual(result, expect)
     }
+    
     func test_단위_변환_1만_미만_1천_이상() {
         let nums = [9_999, 1_000, 1_234]
         let expect = ["9.9천", "1천", "1.2천"]
@@ -88,10 +90,23 @@ final class KAppStoreSearchTests: XCTestCase {
         
         XCTAssertEqual(result, expect)
     }
+    
     func test_단위_변환_1천_미만() {
         let nums = [999, 100, 123]
         let expect = ["999", "100", "123"]
         let result = nums.map { Double($0).convertToUnitString }
+        
+        XCTAssertEqual(result, expect)
+    }
+    
+    func test_검색어_찾기() {
+        let text = "뱅크"
+        
+        let recentSearchTextList = ["카카오뱅크", "뱅크샐러드", "카뱅크오"]
+        
+        let expect = ["카카오뱅크", "뱅크샐러드"]
+        
+        let result = recentSearchTextList.search(of: text)
         
         XCTAssertEqual(result, expect)
     }

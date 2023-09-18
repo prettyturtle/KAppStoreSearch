@@ -83,9 +83,7 @@ extension SearchResultViewController {
     /// 최근 검색어 리스트에 있는지 찾기
     private func findTextFromRecentSearchTextList(_ text: String) -> [String] {
         let recentSearchTextList: [String] = UserDefaults.standard.fetch(key: .recentSearchTextList) ?? []
-        let filteredRecentSearchTextList = recentSearchTextList.filter {
-            $0.lowercased().hasPrefix(text.lowercased())
-        }
+        let filteredRecentSearchTextList = recentSearchTextList.search(of: text)
         
         return filteredRecentSearchTextList
     }
