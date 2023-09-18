@@ -101,6 +101,8 @@ final class AppDetailViewController: UIViewController {
     }
     
     private lazy var screenshotsScrollView = UIScrollView().then {
+        $0.decelerationRate = .fast
+        $0.delegate = self
         $0.showsHorizontalScrollIndicator = false
     }
     
@@ -138,6 +140,9 @@ final class AppDetailViewController: UIViewController {
     /// 검색 결과 (앱 정보)
     let searchResult: SearchResult
     
+    /// 스크린샷 이미지 너비
+    private var screenshotImageWidth: Double?
+    
     init(searchResult: SearchResult) {
         self.searchResult = searchResult
         super.init(nibName: nil, bundle: nil)
@@ -171,6 +176,35 @@ extension AppDetailViewController {
         } else if sender == appDescriptionShowMoreButton {
             appDescriptionLabel.numberOfLines = 0
         }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension AppDetailViewController: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        let cellWidth = (screenshotImageWidth ?? view.frame.width * 0.6) + 8
+        
+        let estimatedIndex = (scrollView.contentOffset.x - 16) / cellWidth
+        print(estimatedIndex, scrollView.contentOffset.x - 16)
+        var index: Int
+        
+        if velocity.x > 0 {
+            index = Int(ceil(estimatedIndex))
+        } else if velocity.x < 0 {
+            index = Int(floor(estimatedIndex))
+        } else {
+            index = Int(round(estimatedIndex))
+        }
+        
+        print(index)
+        
+        let pointeeX = CGFloat(index) * cellWidth - (screenshotImageWidth == view.frame.width * 0.6 ? 8 : 0)
+        
+        targetContentOffset.pointee = CGPoint(x: pointeeX, y: 0)
     }
 }
 
@@ -260,14 +294,16 @@ extension AppDetailViewController {
             screenshotImageView.layer.borderColor = UIColor.separator.cgColor
             screenshotImageView.layer.borderWidth = 0.4
             
+            let screenshotImageViewWidth = screenshotHeight > screenshotWidth ? view.frame.width * 0.6 : view.frame.width - 32
+            let screenshotImageViewHeight = screenshotImageViewWidth * (screenshotHeight / screenshotWidth)
+            
+            screenshotImageWidth = screenshotImageViewWidth
+            
             screenshotImageView.snp.makeConstraints {
-                if screenshotHeight > screenshotWidth {
-                    $0.width.equalTo(view.frame.width * 0.6)
-                } else {
-                    $0.width.equalTo(view.frame.width - 32)
-                }
-                $0.height.equalTo(screenshotImageView.snp.width).multipliedBy(screenshotHeight / screenshotWidth)
+                $0.width.equalTo(screenshotImageViewWidth)
+                $0.height.equalTo(screenshotImageViewHeight)
             }
+            
             screenshotsStackView.addArrangedSubview(screenshotImageView)
             
             ImageFetcher.fetch(screenshotURL) { image in
