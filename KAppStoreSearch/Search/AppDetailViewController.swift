@@ -316,7 +316,11 @@ extension AppDetailViewController {
             screenshotImageView.layer.borderWidth = 0.4
             
             screenshotImageView.snp.makeConstraints {
-                $0.width.equalTo(view.frame.width * 0.6)
+                if screenshotHeight > screenshotWidth {
+                    $0.width.equalTo(view.frame.width * 0.6)
+                } else {
+                    $0.width.equalTo(view.frame.width - 32)
+                }
                 $0.height.equalTo(screenshotImageView.snp.width).multipliedBy(screenshotHeight / screenshotWidth)
             }
             screenshotsStackView.addArrangedSubview(screenshotImageView)
