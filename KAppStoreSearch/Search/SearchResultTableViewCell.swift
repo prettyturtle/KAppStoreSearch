@@ -10,7 +10,10 @@ import SnapKit
 import Then
 import Cosmos
 
+// MARK: - 앱 검색 결과 테이블 뷰 셀
 final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
+    
+    // MARK: - UI 컴포넌트
     private lazy var appIconImageView = UIImageView().then {
         $0.layer.cornerRadius = 12
         $0.contentMode = .scaleAspectFit
@@ -19,14 +22,17 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         $0.layer.borderColor = UIColor.separator.cgColor
         $0.layer.borderWidth = 0.4
     }
+    
     private lazy var appNameLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .medium)
         $0.textColor = .label
     }
+    
     private lazy var appSubTitleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14, weight: .regular)
         $0.textColor = .secondaryLabel
     }
+    
     private lazy var starRatingCountView = CosmosView().then {
         $0.settings.starSize = 16
         $0.settings.starMargin = 2
@@ -43,6 +49,7 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         $0.backgroundColor = .secondarySystemBackground
         $0.layer.cornerRadius = 14
     }
+    
     private lazy var screenshotsStackView = UIStackView().then {
         $0.distribution = .fillEqually
         $0.alignment = .center
@@ -50,6 +57,7 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
         $0.axis = .horizontal
     }
     
+    /// 전체 뷰 세팅
     func setupView(_ searchResult: SearchResult) {
         setupLayout()
         
@@ -74,6 +82,7 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
 
 // MARK: - SET UP
 extension SearchResultTableViewCell {
+    /// 앱 아이콘 세팅
     private func setupAppIconImageView(iconURL: String) {
         ImageFetcher.fetch(iconURL) { [weak self] image in
             guard let image = image else {
@@ -85,6 +94,8 @@ extension SearchResultTableViewCell {
             }
         }
     }
+    
+    /// 스크린샷 세팅
     private func setupScreenshotStackView(screenshotURLs: [String]) {
         for i in 0..<screenshotURLs.count {
             let screenshotURL = screenshotURLs[i]
@@ -136,6 +147,7 @@ extension SearchResultTableViewCell {
         }
     }
     
+    /// 레이아웃 세팅
     private func setupLayout() {
         [
             appIconImageView,

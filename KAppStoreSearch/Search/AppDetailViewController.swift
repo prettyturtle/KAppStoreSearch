@@ -91,7 +91,7 @@ final class AppDetailViewController: UIViewController {
         $0.layer.shadowRadius = 4
         $0.layer.shadowOffset = CGSize(width: -8, height: 0)
         $0.backgroundColor = .systemBackground
-        $0.addTarget(self, action: #selector(didTapWhatsNewContentShowMoreButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(didTapContentShowMoreButton), for: .touchUpInside)
     }
     
     private lazy var screenshotsLabel = UILabel().then {
@@ -130,10 +130,11 @@ final class AppDetailViewController: UIViewController {
         $0.layer.shadowRadius = 4
         $0.layer.shadowOffset = CGSize(width: -8, height: 0)
         $0.backgroundColor = .systemBackground
-        $0.addTarget(self, action: #selector(didTapWhatsNewContentShowMoreButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(didTapContentShowMoreButton), for: .touchUpInside)
     }
     
     // MARK: - 프로퍼티
+    
     /// 검색 결과 (앱 정보)
     let searchResult: SearchResult
     
@@ -161,7 +162,8 @@ extension AppDetailViewController {
 
 // MARK: - UI Event
 extension AppDetailViewController {
-    @objc func didTapWhatsNewContentShowMoreButton(_ sender: UIButton) {
+    /// 더보기 버튼 클릭 이벤트
+    @objc func didTapContentShowMoreButton(_ sender: UIButton) {
         sender.isHidden = true
         
         if sender == whatsNewContentShowMoreButton {
@@ -174,6 +176,7 @@ extension AppDetailViewController {
 
 // MARK: - SET UP
 extension AppDetailViewController {
+    /// 전체 뷰 세팅
     func setupView() {
         setupAppIconImageView(iconURL: searchResult.artworkUrl512)
         setLabelAttr()
@@ -182,6 +185,7 @@ extension AppDetailViewController {
         setupShowMoreButton()
     }
     
+    /// 라벨 속성 세팅
     private func setLabelAttr() {
         appNameLabel.text = searchResult.trackName
         appSubTitleLabel.text = !searchResult.genres.isEmpty ? searchResult.genres[0] : (searchResult.artistName != "" ? searchResult.artistName : "")
@@ -193,6 +197,7 @@ extension AppDetailViewController {
         appDescriptionLabel.setLineHeight(with: 8)
     }
     
+    /// 더보기 버튼 세팅
     private func setupShowMoreButton() {
         if whatsNewContentLabel.currentLineCount() > 3 {
             whatsNewContentLabel.numberOfLines = 3
@@ -213,6 +218,7 @@ extension AppDetailViewController {
         }
     }
     
+    /// 앱 아이콘 하단 서브 정보 뷰 세팅
     private func setupSubInfoStackView() {
         setupAppRatingInfo()
         setupAppAgeInfo()
@@ -276,6 +282,7 @@ extension AppDetailViewController {
         subInfoStackView.addArrangedSubview(appAgeInfoView)
     }
     
+    /// 앱 아이콘 세팅
     private func setupAppIconImageView(iconURL: String) {
         ImageFetcher.fetch(iconURL) { [weak self] image in
             guard let image = image else {
@@ -287,6 +294,8 @@ extension AppDetailViewController {
             }
         }
     }
+    
+    /// 스크린샷 세팅
     private func setupScreenshotStackView(screenshotURLs: [String]) {
         for i in 0..<screenshotURLs.count {
             let screenshotURL = screenshotURLs[i]
@@ -337,6 +346,7 @@ extension AppDetailViewController {
         }
     }
     
+    /// 레이아웃 세팅
     private func setupLayout() {
         view.addSubview(totalScrollView)
         
