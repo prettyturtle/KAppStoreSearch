@@ -109,6 +109,41 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		6BBB13C42AB9F05D00BA3C68 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				6B1837992AB75B7E0034CC07 /* CacheManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		6BBB13C52AB9F06600BA3C68 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6BFAC5492AB598D90025361B /* API.swift */,
+				6B18378B2AB6B9C00034CC07 /* Network.swift */,
+				6B1837892AB6B9A50034CC07 /* ImageFetcher.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		6BBB13C62AB9F08600BA3C68 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				6BFAC5442AB582230025361B /* TabBarController.swift */,
+				6BFAC5462AB5979A0025361B /* Search */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		6BBB13C72AB9F0A400BA3C68 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				6BFAC54D2AB5C1150025361B /* CellIdentifier.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		6BFAC51E2AB569DC0025361B = {
 			isa = PBXGroup;
 			children = (
@@ -133,15 +168,12 @@
 			children = (
 				6BFAC52A2AB569DC0025361B /* AppDelegate.swift */,
 				6BFAC52C2AB569DC0025361B /* SceneDelegate.swift */,
-				6BFAC5442AB582230025361B /* TabBarController.swift */,
-				6BFAC5492AB598D90025361B /* API.swift */,
-				6B18378B2AB6B9C00034CC07 /* Network.swift */,
-				6B1837892AB6B9A50034CC07 /* ImageFetcher.swift */,
-				6B1837992AB75B7E0034CC07 /* CacheManager.swift */,
+				6BBB13C62AB9F08600BA3C68 /* Scene */,
+				6BBB13C52AB9F06600BA3C68 /* Network */,
+				6BBB13C42AB9F05D00BA3C68 /* Manager */,
 				6B1837842AB6B2AA0034CC07 /* Model */,
-				6BFAC54D2AB5C1150025361B /* CellIdentifier.swift */,
+				6BBB13C72AB9F0A400BA3C68 /* Util */,
 				6BFAC54F2AB5D5370025361B /* Extension */,
-				6BFAC5462AB5979A0025361B /* Search */,
 				6BFAC5302AB569DC0025361B /* Main.storyboard */,
 				6BFAC5332AB569DE0025361B /* Assets.xcassets */,
 				6BFAC5352AB569DE0025361B /* LaunchScreen.storyboard */,
