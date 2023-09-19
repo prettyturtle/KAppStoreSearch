@@ -14,7 +14,7 @@ struct ImageFetcher {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { data, _, error in
+        let dataTask = URLSession.shared.dataTask(with: url) { data, _, error in
             if let cachedImage = CacheManager.shared.object(forKey: urlString as NSString) {
                 completion(cachedImage)
                 return
@@ -36,6 +36,7 @@ struct ImageFetcher {
                 return
             }
         }
-        .resume()
+        
+        dataTask.resume()
     }
 }

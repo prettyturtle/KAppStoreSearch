@@ -1,5 +1,5 @@
 //
-//  NetworkRequest.swift
+//  Network.swift
 //  KAppStoreSearch
 //
 //  Created by yc on 2023/09/17.
@@ -9,6 +9,9 @@ import Foundation
 
 enum NetworkError: Error {
     case unknown
+    case invalidRequest
+    case jsonError
+    case serverError
 }
 
 struct NetworkRequest<T: Codable> {
@@ -26,12 +29,19 @@ struct NetworkRequest<T: Codable> {
         urlComponent?.setQueryItems(with: queryItems)
         
         guard let url = urlComponent?.url else {
-            completion(.failure(.unknown))
+            completion(.failure(.invalidRequest))
             return
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                  (200..<300) ~= statusCode else {
+                completion(.failure(.serverError))
+                return
+            }
+            
             guard let data = data else {
+                completion(.failure(.unknown))
                 return
             }
             
@@ -41,8 +51,10 @@ struct NetworkRequest<T: Codable> {
                 
                 completion(.success(decodedData))
             } catch {
-                completion(.failure(.unknown))
+                completion(.failure(.jsonError))
             }
-        }.resume()
+        }
+        
+        dataTask.resume()
     }
 }
