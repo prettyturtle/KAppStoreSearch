@@ -18,6 +18,18 @@ final class SearchViewController: UIViewController {
         $0.font = .systemFont(ofSize: 24, weight: .bold)
     }
     
+    private lazy var removeAllButton = UIButton().then {
+        $0.setTitle("모두 지우기", for: .normal)
+        $0.setTitleColor(.systemBlue, for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0.1, left: 0, bottom: 0.1, right: 0)
+        $0.addTarget(
+            self,
+            action: #selector(didTapRemoveAllButton),
+            for: .touchUpInside
+        )
+    }
+    
     private lazy var recentSearchTextTableView = UITableView().then {
         $0.isScrollEnabled = false
         $0.dataSource = self
@@ -62,7 +74,27 @@ extension SearchViewController {
     /// 최근 검색어 리스트를 가져오고 테이블 뷰를 Reload 한다
     func fetchRecentSearchTextList() {
         recentSearchTextList = UserDefaults.standard.fetch(key: .recentSearchTextList) ?? []
+        
+        hideWhenRecentSearchTextEmpty(isEmpty: recentSearchTextList.isEmpty)
+        
         recentSearchTextTableView.reloadData()
+    }
+    
+    /// 최근 검색어 없을 때 가리기
+    /// - Parameter isEmpty: 최근 검색어 없는지
+    func hideWhenRecentSearchTextEmpty(isEmpty: Bool) {
+        recentSearchTextTitleLabel.isHidden = isEmpty
+        recentSearchTextTableView.isHidden = isEmpty
+        removeAllButton.isHidden = isEmpty
+    }
+}
+
+// MARK: - UI Event
+extension SearchViewController {
+    @objc func didTapRemoveAllButton() {
+        UserDefaults.standard.removeAll(key: .recentSearchTextList)
+        
+        fetchRecentSearchTextList()
     }
 }
 
@@ -86,6 +118,19 @@ extension SearchViewController: SearchResultViewControllerDelegate {
     }
 }
 
+// MARK: - RecentSearchTextTableViewCellDelegate
+extension SearchViewController: RecentSearchTextTableViewCellDelegate {
+    func removeRecentSearchText(at recentSearchText: String?) {
+        guard let recentSearchText = recentSearchText else {
+            return
+        }
+        
+        try? UserDefaults.standard.remove(recentSearchText, key: .recentSearchTextList)
+        
+        fetchRecentSearchTextList()
+    }
+}
+
 // MARK: - UITableViewDataSource
 extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,8 +145,9 @@ extension SearchViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let recentSearchText = recentSearchTextList[indexPath.row]
-        cell.setupView(recentSearchText: recentSearchText, hasIcon: false)
+        cell.delegate = self
+        cell.recentSearchText = recentSearchTextList[indexPath.row]
+        cell.setupView(hasIcon: false)
         
         return cell
     }
@@ -156,19 +202,26 @@ extension SearchViewController {
     private func setupLayout() {
         [
             recentSearchTextTitleLabel,
+            removeAllButton,
             recentSearchTextTableView
         ].forEach {
             view.addSubview($0)
         }
         
         recentSearchTextTitleLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(16)
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(32)
+            $0.trailing.equalTo(removeAllButton.snp.leading).inset(-16)
+        }
+        
+        removeAllButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(recentSearchTextTitleLabel.snp.bottom)
         }
         
         recentSearchTextTableView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(recentSearchTextTitleLabel.snp.bottom).offset(4)
+            $0.top.equalTo(recentSearchTextTitleLabel.snp.bottom).offset(8)
             $0.bottom.equalToSuperview()
         }
     }

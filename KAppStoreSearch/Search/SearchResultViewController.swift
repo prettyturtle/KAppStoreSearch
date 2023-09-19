@@ -115,11 +115,7 @@ extension SearchResultViewController {
             return
         }
         
-        do {
-            try UserDefaults.standard.save(text, key: .recentSearchTextList)
-        } catch {
-            print("ERROR : \(error)")
-        }
+        try? UserDefaults.standard.save(text, key: .recentSearchTextList)
     }
     
     /// 검색 결과 보여주기
@@ -185,9 +181,8 @@ extension SearchResultViewController: UITableViewDataSource {
                 return UITableViewCell()
             }
             
-            if !recentSearchTexts.isEmpty {
-                cell.setupView(recentSearchText: recentSearchTexts[indexPath.row], hasIcon: true)
-            }
+            cell.recentSearchText = recentSearchTexts[indexPath.row]
+            cell.setupView(hasIcon: true)
             
             return cell
         }
