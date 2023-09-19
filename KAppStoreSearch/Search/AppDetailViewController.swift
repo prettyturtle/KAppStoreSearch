@@ -212,9 +212,9 @@ extension AppDetailViewController: UIScrollViewDelegate {
 extension AppDetailViewController {
     /// 전체 뷰 세팅
     func setupView() {
-        setupAppIconImageView(iconURL: searchResult.artworkUrl512)
+        setupAppIconImageView(iconURL: searchResult.artworkUrl512 ?? "")
         setLabelAttr()
-        setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls)
+        setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls ?? [])
         setupSubInfoStackView()
         setupShowMoreButton()
     }
@@ -222,7 +222,12 @@ extension AppDetailViewController {
     /// 라벨 속성 세팅
     private func setLabelAttr() {
         appNameLabel.text = searchResult.trackName
-        appSubTitleLabel.text = !searchResult.genres.isEmpty ? searchResult.genres[0] : (searchResult.artistName != "" ? searchResult.artistName : "")
+        
+        if searchResult.genres?.isEmpty == true {
+            appSubTitleLabel.text = searchResult.artistName ?? ""
+        } else {
+            appSubTitleLabel.text = searchResult.genres?[0]
+        }
         
         whatsNewContentLabel.text = searchResult.releaseNotes
         whatsNewContentLabel.setLineHeight(with: 8)
@@ -329,7 +334,7 @@ extension AppDetailViewController {
         
         let appRatingInfoTopLabel = UILabel()
         appRatingInfoTopLabel.textAlignment = .center
-        appRatingInfoTopLabel.text = Double(searchResult.userRatingCount).convertToUnitString + "개의 평가"
+        appRatingInfoTopLabel.text = Double(searchResult.userRatingCount ?? 0).convertToUnitString + "개의 평가"
         appRatingInfoTopLabel.font = .systemFont(ofSize: 12, weight: .medium)
         appRatingInfoTopLabel.textColor = .secondaryLabel
         
@@ -349,7 +354,7 @@ extension AppDetailViewController {
         
         let appRatingInfoBottomLabel = starRatingCountView
         
-        appRatingInfoBottomLabel.rating = userRating
+        appRatingInfoBottomLabel.rating = userRating ?? 0.0
         
         appRatingInfoView.setupView(top: appRatingInfoTopLabel, mid: appRatingInfoMidLabel, bottom: appRatingInfoBottomLabel)
         

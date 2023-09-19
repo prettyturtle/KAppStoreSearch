@@ -61,14 +61,19 @@ final class SearchResultTableViewCell: UITableViewCell, CellIdentifier {
     func setupView(_ searchResult: SearchResult) {
         setupLayout()
         
-        setupAppIconImageView(iconURL: searchResult.artworkUrl512)
-        setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls)
+        setupAppIconImageView(iconURL: searchResult.artworkUrl512 ?? "")
+        setupScreenshotStackView(screenshotURLs: searchResult.screenshotUrls ?? [])
         
         appNameLabel.text = searchResult.trackName
-        appSubTitleLabel.text = !searchResult.genres.isEmpty ? searchResult.genres[0] : (searchResult.artistName != "" ? searchResult.artistName : "")
         
-        starRatingCountView.rating = searchResult.averageUserRating
-        starRatingCountView.text = Double(searchResult.userRatingCount).convertToUnitString
+        if searchResult.genres?.isEmpty == true {
+            appSubTitleLabel.text = searchResult.artistName ?? ""
+        } else {
+            appSubTitleLabel.text = searchResult.genres?[0]
+        }
+        
+        starRatingCountView.rating = searchResult.averageUserRating!
+        starRatingCountView.text = Double(searchResult.userRatingCount!).convertToUnitString
     }
     
     override func prepareForReuse() {
