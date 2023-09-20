@@ -8,10 +8,11 @@
 import Foundation
 
 enum NetworkError: Error {
-    case unknown
+    case invalidURL
     case invalidRequest
     case jsonError
     case serverError
+    case unknown
 }
 
 struct NetworkRequest<T: Codable> {
@@ -29,11 +30,16 @@ struct NetworkRequest<T: Codable> {
         urlComponent?.setQueryItems(with: queryItems)
         
         guard let url = urlComponent?.url else {
-            completion(.failure(.invalidRequest))
+            completion(.failure(.invalidURL))
             return
         }
         
         let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let _ = error {
+                completion(.failure(.invalidRequest))
+                return
+            }
+            
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
                   (200..<300) ~= statusCode else {
                 completion(.failure(.serverError))

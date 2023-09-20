@@ -47,6 +47,34 @@ final class SearchResultViewController: UIViewController {
         $0.isHidden = true
     }
     
+    private lazy var errorLabel = UILabel().then {
+        $0.text = "연결할 수 없음"
+        $0.font = .systemFont(ofSize: 32, weight: .black)
+        $0.textColor = .label
+        $0.isHidden = true
+    }
+    
+    private lazy var errorSubLabel = UILabel().then {
+        $0.text = "문제가 발생했습니다. 다시 시도하십시오."
+        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.textColor = .secondaryLabel
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+        $0.isHidden = true
+    }
+    
+    private lazy var retryButton = UIButton().then {
+        $0.setTitle("재시도", for: .normal)
+        $0.setTitleColor(.systemBlue, for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.isHidden = true
+        $0.addTarget(
+            self,
+            action: #selector(didTapRetryButton),
+            for: .touchUpInside
+        )
+    }
+    
     // MARK: - 프로퍼티
     
     weak var delegate: SearchResultViewControllerDelegate?
@@ -92,6 +120,8 @@ extension SearchResultViewController {
     
     /// 검색 버튼을 눌렀을 때 호출
     func didClickedSearchButton(with text: String) {
+        currentSearchText = text
+        
         isEndSearch = true
         
         saveAtRecentSearchTextList(text)
@@ -128,18 +158,28 @@ extension SearchResultViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let searchResponse):
+                    self.setupErrorLabel(isOccur: false)
                     if searchResponse.resultCount == 0 {
                         self.setupEmptyResultLabel(isEmpty: true, searchText: keyword)
                         return
                     }
                     
+                    self.setupEmptyResultLabel(isEmpty: false)
                     self.searchResults = searchResponse.results
                     self.searchResultTableView.reloadData()
                 case .failure(_):
-                    self.setupEmptyResultLabel(isEmpty: true, searchText: keyword)
+                    self.setupErrorLabel(isOccur: true)
                 }
             }
         }
+    }
+}
+
+// MARK: - UI Event
+extension SearchResultViewController {
+    @objc func didTapRetryButton() {
+        setupErrorLabel(isOccur: false)
+        fetchSearchResult(keyword: currentSearchText)
     }
 }
 
@@ -215,11 +255,26 @@ extension SearchResultViewController {
         }
     }
     
+    private func setupErrorLabel(isOccur: Bool) {
+        errorLabel.isHidden = !isOccur
+        errorSubLabel.isHidden = !isOccur
+        retryButton.isHidden = !isOccur
+        
+        if isOccur {
+            searchResultTableView.isHidden = true
+            searchResultEmptyLabel.isHidden = true
+            emptySearchResultTextLabel.isHidden = true
+        }
+    }
+    
     private func setupLayout() {
         [
             searchResultTableView,
             searchResultEmptyLabel,
-            emptySearchResultTextLabel
+            emptySearchResultTextLabel,
+            errorLabel,
+            errorSubLabel,
+            retryButton
         ].forEach {
             view.addSubview($0)
         }
@@ -235,6 +290,20 @@ extension SearchResultViewController {
         emptySearchResultTextLabel.snp.makeConstraints {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
             $0.top.equalTo(searchResultEmptyLabel.snp.bottom).offset(8)
+        }
+        
+        errorLabel.snp.makeConstraints {
+            $0.center.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        errorSubLabel.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.top.equalTo(searchResultEmptyLabel.snp.bottom).offset(8)
+        }
+        
+        retryButton.snp.makeConstraints {
+            $0.centerX.equalTo(errorLabel.snp.centerX)
+            $0.top.equalTo(errorSubLabel.snp.bottom).offset(8)
         }
     }
 }
